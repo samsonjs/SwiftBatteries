@@ -8,11 +8,13 @@ import Foundation
 
 public extension CollectionType {
 
+    typealias T = Generator.Element
+
     /// Returns elements of the collection that match the given regular expression.
     /// If elements are String or NSString instances they will be matched directly.
     /// if they are NSObject instances their -description is matched. Otherwise
     /// they are not matched.
-    func grep(regex: String) throws -> [Self.Generator.Element] {
+    func grep(regex: String) throws -> [T] {
         let re = try NSRegularExpression(pattern: regex, options: NSRegularExpressionOptions(rawValue: 0))
         return filter({ item -> Bool in
             if let string = item as? String {
@@ -40,11 +42,11 @@ func randomInt(max: Int) -> Int {
     return 1 + Int(n)
 }
 
-public extension CollectionType where Self.Index: Strideable {
+public extension CollectionType where Index: RandomAccessIndexType {
 
     /// Returns a random element, or nil if the collection is empty
-    func sample() -> Generator.Element? {
-        guard count > 0 else {
+    func sample() -> T? {
+        guard !isEmpty else {
             return nil
         }
         let max = Int(count.toIntMax())
@@ -58,8 +60,8 @@ public extension CollectionType where Self.Generator.Element: Equatable {
 
     /// Returns the unique elements of a sorted collection by collapsing runs of
     /// identical elements.
-    func unique() -> [Self.Generator.Element] {
-        var last: Self.Generator.Element?
+    func unique() -> [T] {
+        var last: T?
         return filter({ item -> Bool in
             let isUnique: Bool = last == nil || last != item
             last = item
