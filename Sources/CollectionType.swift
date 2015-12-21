@@ -49,9 +49,9 @@ public extension CollectionType where Index: RandomAccessIndexType {
         guard !isEmpty else {
             return nil
         }
-        let max = Int(count.toIntMax())
-        let n = randomInt(max) - 1
-        return self[startIndex.advancedBy(n)]
+        let n = Int(count.toIntMax())
+        let i = startIndex.advancedBy(Index.Distance(IntMax(randomInt(n) - 1)))
+        return self[i]
     }
     
 }
