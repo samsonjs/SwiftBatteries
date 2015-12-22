@@ -26,13 +26,13 @@ public extension CollectionType {
 
 public extension CollectionType where Index: RandomAccessIndexType {
 
-    /// Returns a random element, or nil if the collection is empty
+    /// Returns a random element, or nil if the collection is empty.
     func sample() -> Generator.Element? {
         guard !isEmpty else {
             return nil
         }
-        let n = Int(count.toIntMax())
-        let i = startIndex.advancedBy(Index.Distance(IntMax(randomInt(n) - 1)))
+        let n = randomInt(Int(count.toIntMax()))
+        let i = startIndex.advancedBy(Index.Distance(IntMax(n)))
         return self[i]
     }
     
@@ -44,11 +44,11 @@ public extension CollectionType where Generator.Element: Equatable {
     /// identical elements.
     func unique() -> [Generator.Element] {
         var last: Generator.Element?
-        return filter({ item -> Bool in
-            let isUnique: Bool = last == nil || last != item
+        return filter { item in
+            let isUnique = last == nil || last != item
             last = item
             return isUnique
-        })
+        }
     }
 
 }
