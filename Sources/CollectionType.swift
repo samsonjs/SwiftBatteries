@@ -2,13 +2,11 @@ import Foundation
 
 public extension CollectionType {
 
-    typealias T = Generator.Element
-
     /// Returns elements of the collection that match the given regular expression.
     /// If elements are String or NSString instances they will be matched directly.
     /// if they are NSObject instances their -description is matched. Otherwise
     /// they are not matched.
-    func grep(regex: String) throws -> [T] {
+    func grep(regex: String) throws -> [Generator.Element] {
         let re = try NSRegularExpression(pattern: regex, options: NSRegularExpressionOptions(rawValue: 0))
         return filter({ item -> Bool in
             if let string = item as? String {
@@ -29,7 +27,7 @@ public extension CollectionType {
 public extension CollectionType where Index: RandomAccessIndexType {
 
     /// Returns a random element, or nil if the collection is empty
-    func sample() -> T? {
+    func sample() -> Generator.Element? {
         guard !isEmpty else {
             return nil
         }
@@ -40,12 +38,12 @@ public extension CollectionType where Index: RandomAccessIndexType {
     
 }
 
-public extension CollectionType where Self.Generator.Element: Equatable {
+public extension CollectionType where Generator.Element: Equatable {
 
     /// Returns the unique elements of a sorted collection by collapsing runs of
     /// identical elements.
-    func unique() -> [T] {
-        var last: T?
+    func unique() -> [Generator.Element] {
+        var last: Generator.Element?
         return filter({ item -> Bool in
             let isUnique: Bool = last == nil || last != item
             last = item
