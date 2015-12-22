@@ -1,11 +1,5 @@
 import Foundation
 
-#if os(Linux)
-    import Glibc
-#else
-    import Darwin
-#endif
-
 public extension CollectionType {
 
     typealias T = Generator.Element
@@ -30,16 +24,6 @@ public extension CollectionType {
         })
     }
 
-}
-
-/// Returns a random integer between 1 and max
-func randomInt(max: Int) -> Int {
-    #if os(Linux)
-        let n = random() % max
-    #else
-        let n = arc4random_uniform(UInt32(max))
-    #endif
-    return 1 + Int(n)
 }
 
 public extension CollectionType where Index: RandomAccessIndexType {
